@@ -1,0 +1,15 @@
+body{
+    font-family: 'Roboto', sans-serif;
+}
+
+.App{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.Cards{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}

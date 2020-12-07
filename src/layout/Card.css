@@ -1,0 +1,11 @@
+.Card{
+    flex-grow: 2;
+    margin: 25px;
+    border-radius: 3px; 
+    overflow: hidden;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+
+}
