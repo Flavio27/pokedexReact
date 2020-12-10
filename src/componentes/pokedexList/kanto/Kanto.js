@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { LINK_POKEDEX_LIST } from '../../api'
 import { POKE_IMG_API, POKE_IMG_1_TO_7_GEN } from '../../imgLinks'
-import button from '@material-ui/core/button';
-import buttonGroup from '@material-ui/core/buttonGroup';
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import styled from 'styled-components'
-import {catchNameCard} from '../../search/SearchPoke'
+import { catchNameCard } from '../../search/SearchPoke'
 
 export let pokeNameCatch = 'bulbasaur'
 
@@ -12,6 +12,7 @@ const Main = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: center;
 `
 
 const DivButtons = styled.div`
@@ -58,6 +59,18 @@ const PokeNumber = styled.div`
 
 `
 
+const InfoGenPoke = styled.div`
+    flex-basis: 100%;
+    width: 400px;
+    flex-wrap: wrap;
+    margin: 10px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+
+    
+`
+
 
 function Kanto() {
     const [pokeData, setPokeData] = useState([])
@@ -66,7 +79,7 @@ function Kanto() {
     const [totalPoke, setTotalPoke] = useState()
     const [changeLink, setChangeLink] = useState(false)
     const [genName, setGenName] = useState('')
-    
+
 
 
 
@@ -97,7 +110,7 @@ function Kanto() {
         else if (init === 810) { setGenName('Generation 8') }
     }
 
-    function CatchId(id){
+    function CatchId(id) {
         pokeNameCatch = id
         console.log(pokeNameCatch)
     }
@@ -107,24 +120,21 @@ function Kanto() {
         <Main>
 
             <div>
-                <button onClick={() => SearchGeneration(0, 151)}>Generation 1</button>
-                <button onClick={() => SearchGeneration(152, 251)}>Generation 2</button>
-                <button onClick={() => SearchGeneration(252, 386)}>Generation 3</button>
-                <button onClick={() => SearchGeneration(387, 493)}>Generation 4</button>
-                <button onClick={() => SearchGeneration(494, 649)}>Generation 5</button>
-                <button onClick={() => SearchGeneration(650, 721)}>Generation 6</button>
-                <button onClick={() => SearchGeneration(722, 809)}>Generation 7</button>
-                <button onClick={() => SearchGeneration(810, 898)}>Generation 8</button>
+                <Button variant="contained" onClick={() => SearchGeneration(0, 151)} style={{ margin: "10px" }}>Generation 1</Button>
+                <Button variant="contained" onClick={() => SearchGeneration(152, 251)} style={{ margin: "10px" }}>Generation 2</Button>
+                <Button variant="contained" onClick={() => SearchGeneration(252, 386)} style={{ margin: "10px" }}> Generation 3</Button>
+                <Button variant="contained" onClick={() => SearchGeneration(387, 493)} style={{ margin: "10px" }}>Generation 4</Button>
+                <Button variant="contained" onClick={() => SearchGeneration(494, 649)} style={{ margin: "10px" }}>Generation 5</Button>
+                <Button variant="contained" onClick={() => SearchGeneration(650, 721)} style={{ margin: "10px" }}>Generation 6</Button>
+                <Button variant="contained" onClick={() => SearchGeneration(722, 809)} style={{ margin: "10px" }}>Generation 7</Button>
+                <Button variant="contained" onClick={() => SearchGeneration(810, 898)} style={{ margin: "10px" }}>Generation 8</Button>
             </div>
 
-
-            {/* <button onClick={SearchNational}>National</button> */}
             {
                 (totalPoke > 0 ? (
-                    <div>
-                        <h1>{genName}</h1>
-                        <h1>Total Pokémon: {totalPoke}</h1>
-                    </div>) : (''))
+                    <InfoGenPoke>
+                        <h2>{genName} Total Pokémon: {totalPoke}</h2>
+                    </InfoGenPoke>) : (''))
             }
 
             <Evolutions>
@@ -134,7 +144,7 @@ function Kanto() {
                             (pokes.entry_number >= filterInit && pokes.entry_number <= filterEnd ? (
                                 <PokeCard name={pokes.pokemon_species.name} key={pokes.entry_number} onClick={() => catchNameCard(pokes.pokemon_species.name)}>
                                     <PokeNumber>{pokes.entry_number}</PokeNumber>
-                                    <img alt={pokes.pokemon_species.name} src={`${POKE_IMG_1_TO_7_GEN}/${pokes.pokemon_species.name}.png`}/>
+                                    <img alt={pokes.pokemon_species.name} src={`${POKE_IMG_1_TO_7_GEN}/${pokes.pokemon_species.name}.png`} />
                                     <PokeName>{pokes.pokemon_species.name}</PokeName>
                                 </PokeCard>
                             ) : (''))

@@ -16,10 +16,12 @@ import NormalEvoChain from './styles/NormalEvoChain'
 import PokeText from './styles/PokeText'
 import './styles/pokeLayout/Information.css'
 import TextField from '@material-ui/core/TextField';
-import { InputName, PokeballIcon, PokeballDiv, PokeballNumber, BallsDiv, CardsDiv, PokeCard, PokeNameCard, PokeNumberCard, } from './styles/SearchSytle'
+import { InputName, PokeballIcon, PokeballDiv, PokeballNumber, BallsDiv, BallsArea, BallsDivCenter, CardsDiv, YourTeam,  PokeCard, PokeNameCard, PokeNumberCard, } from './styles/SearchSytle'
 import Button from '@material-ui/core/Button';
 import MitOrLend from './styles/MitOrLend'
+import ModalBalls, { handleOpen } from './styles/ModalBalls'
 let pokeballName = 'pokeball'
+let testando
 
 export let catchNameCard
 
@@ -41,7 +43,7 @@ function SearchPoke() {
         caugthBall: ''
     })
     const [chosedBall, setChosedBall] = useState('')
-
+    const [caught, setcaught] = useState(false)
 
     const [pokeID, setPokeID] = useState(1)
     const [pokeimg, setPokeimg] = useState('')
@@ -250,20 +252,19 @@ function SearchPoke() {
         } else if (pokeExpBase <= 150 && pokeExpBase >= 100) { // first evolution average rate 
             pokemoRate = 0.2
         } else if (pokeExpBase <= 250 && pokeExpBase >= 151) { // second evolution average rate
-            ballRate = ballRate/2
+            ballRate = ballRate / 2
             pokemoRate = 0.1
         } else if (pokeExpBase <= 300 && pokeExpBase >= 251) { // legendary or mithycal average rate
-            ballRate = ballRate/2
+            ballRate = ballRate / 2
             pokemoRate = 0.1 / 2
         }
         else if (pokeExpBase > 300) { // legendary or mithycal average rate
-            ballRate = ballRate/2
+            ballRate = ballRate / 2
             pokemoRate = 0.1 / 3
         }
 
         let catchRate2 = 1 * (Math.random() < (pokemoRate * ballRate));
         if (catchRate2 > 0.50) {
-
             alert(`Congratulations you caught a ${pokeName}! Total balls failed to catch: Pokeballs: ${balls.wastePokeBalls}, GreatBalls: ${balls.wasteGreatBalls}, UltraBalls: ${balls.wasteUltraBalls} to catch`);
             setBalls({ ...balls, wastePokeBalls: 0, wasteGreatBalls: 0, wasteUltraBalls: 0 })
             setPokeCatches([...pokeCatches, {
@@ -276,11 +277,13 @@ function SearchPoke() {
                 caugthBall: chosedBall
             }])
             console.log(pokeCatches)
-        }
 
+
+        }
     }
 
     function ThrowPokeball() {
+        console.log(pokeStats)
         setChosedBall('Pokeballs')
         if (balls.pokeBalls >= 1) {
             if (pokeExpBase > 250) {
@@ -324,52 +327,9 @@ function SearchPoke() {
     return (
         <React.Fragment>
 
-            <BallsDiv>
-                <PokeballIcon onClick={e => ThrowPokeball()}>
-                    <PokeballDiv>
-                        <img src={`${BALLS_IMG}/pokeballs.png`}></img>
-                        <PokeballNumber>{balls.pokeBalls}</PokeballNumber>
-                    </PokeballDiv>
-                </PokeballIcon>
-                <PokeballIcon onClick={e => ThrowGreatBall()}>
-                    <PokeballDiv>
-                        <img src={`${BALLS_IMG}/greatballs.png`}></img>
-                        <PokeballNumber>{balls.greatBalls}</PokeballNumber>
-                    </PokeballDiv>
-                </PokeballIcon>
-                <PokeballIcon onClick={e => ThrowUltraBall()}>
-                    <PokeballDiv>
-                        <img src={`${BALLS_IMG}/ultraballs.png`}></img>
-                        <PokeballNumber>{balls.ultraBalls}</PokeballNumber>
-                    </PokeballDiv>
-                </PokeballIcon>
-            </BallsDiv>
-            <CardsDiv>
-                {
-                    pokeCatches.map(catchs => (
-
-                        <React.Fragment>
-                            {catchs.pokemonName.length > 1 &&
-                                <PokeCard>
-                                    <img src={`${BALLS_IMG}/${catchs.caugthBall}.png`} style={{"height":"25px","width":"25px"}}/>
-                                    <img src={`${POKE_PIC_DRAW}/${catchs.pokemonId}.png`} alt={catchs.pokemonName} style={{"height":"140px","width":"140px"}}/>
-                                    <PokeNameCard>{catchs.pokemonName}</PokeNameCard>
-                                </PokeCard>
-                            }
-                        </React.Fragment>
-                    ))
-                }
-            </CardsDiv>
-            <div>
-                <br />
-                PokeballsWasted - {balls.wastePokeBalls} -
-                PokeballsWasted - {balls.wasteGreatBalls} -
-                PokeballsWasted - {balls.wasteUltraBalls} -
-
-            </div>
             <InputName>
                 <TextField label="Pokémon Name / Number" id="outlined-size-small" defaultValue="Small" variant="outlined" size="small" value={pokeNameChange} onChange={e => setpokeNameChange(e.target.value.toLowerCase())} />
-                <Button variant="contained" onClick={Search} style={{ marginLeft: "10px" }}>Search</Button>
+                <Button variant="contained" onClick={Search} style={{ marginLeft: "10px" }} color="secondary">Search</Button>
                 <p style={{ color: "red" }}>{error.length > 0 ? (error) : ('')}</p>
             </InputName>
 
@@ -405,6 +365,61 @@ function SearchPoke() {
                 }
 
             </div>
+            <BallsArea>
+                <h2>Your Balls</h2>
+                <BallsDiv>
+                    <BallsDivCenter>
+                        <PokeballIcon onClick={e => ThrowPokeball()}>
+                            <PokeballDiv>
+                                <img src={`${BALLS_IMG}/pokeballs.png`}></img>
+                                <PokeballNumber>{balls.pokeBalls}</PokeballNumber>
+                            </PokeballDiv>
+                        </PokeballIcon>
+                        <PokeballIcon onClick={e => ThrowGreatBall()}>
+                            <PokeballDiv>
+                                <img src={`${BALLS_IMG}/greatballs.png`}></img>
+                                <PokeballNumber>{balls.greatBalls}</PokeballNumber>
+                            </PokeballDiv>
+                        </PokeballIcon>
+                        <PokeballIcon onClick={e => ThrowUltraBall()}>
+                            <PokeballDiv>
+                                <img src={`${BALLS_IMG}/ultraballs.png`}></img>
+                                <PokeballNumber>{balls.ultraBalls}</PokeballNumber>
+                            </PokeballDiv>
+                        </PokeballIcon>
+                    </BallsDivCenter>
+                </BallsDiv>
+            </BallsArea>
+            {/* <div>
+                <br />
+                PokeballsWasted - {balls.wastePokeBalls} -
+                PokeballsWasted - {balls.wasteGreatBalls} -
+                PokeballsWasted - {balls.wasteUltraBalls} -
+
+            </div> */}
+            <CardsDiv>
+            {pokeCatches.length > 1 &&
+                <YourTeam>Your Pokemons</YourTeam>
+            }
+                {
+                    pokeCatches.map(catchs => (
+
+                        <React.Fragment>
+
+                            {catchs.pokemonName.length > 1 &&
+                                <React.Fragment>
+                                    <PokeCard onClick={() => catchNameCard(catchs.pokemonName)}>
+                                        <img src={`${BALLS_IMG}/${catchs.caugthBall}.png`} alt={catchs.pokemonName} style={{ "height": "25px", "width": "25px" }} />
+                                        <img src={`${POKE_PIC_DRAW}/${catchs.pokemonId}.png`} alt={catchs.pokemonName} style={{ "height": "140px", "width": "140px" }} />
+                                        <PokeNameCard>{catchs.pokemonName}</PokeNameCard>
+                                    </PokeCard>
+                                </React.Fragment>
+                            }
+                        </React.Fragment>
+                    ))
+                }
+                
+            </CardsDiv>
         </React.Fragment>
     )
 }
