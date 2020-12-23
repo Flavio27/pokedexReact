@@ -23,6 +23,7 @@ import ModalBalls, { handleOpen } from './styles/ModalBalls'
 let pokeballName = 'pokeball'
 let testando
 
+
 export let catchNameCard
 
 function SearchPoke() {
@@ -408,7 +409,7 @@ function SearchPoke() {
 
                             {catchs.pokemonName.length > 1 &&
                                 <React.Fragment>
-                                    <PokeCard onClick={() => catchNameCard(catchs.pokemonName)}>
+                                    <PokeCard key={catchs.id} onClick={() => catchNameCard(catchs.pokemonName)}>
                                         <img src={`${BALLS_IMG}/${catchs.caugthBall}.png`} alt={catchs.pokemonName} style={{ "height": "25px", "width": "25px" }} />
                                         <img src={`${POKE_PIC_DRAW}/${catchs.pokemonId}.png`} alt={catchs.pokemonName} style={{ "height": "140px", "width": "140px" }} />
                                         <PokeNameCard>{catchs.pokemonName}</PokeNameCard>
